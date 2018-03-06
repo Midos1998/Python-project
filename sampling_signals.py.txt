@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb 27 23:27:39 2018
+
+@author: koko
+"""
+import matplotlib.pyplot as plt
+import numpy as np
+# In[1]:
+def plot( t , y ):
+    fig = plt.figure()
+    ax = fig.gca()
+    ax.grid(True)
+
+    plt.plot( t , y )
+
+def plot2( t , y1 , y2 ):
+    fig = plt.figure()
+    ax = fig.gca()
+    ax.set_ylim((-5, 5))
+    ax.grid(True)
+
+    plt.plot( t , y1 , 'C1', label='C1' )
+    plt.plot( t , y2 , 'C2', label='C2')
+    plt.legend()
+
+def stem( t , y1 ):
+
+    markerline, stemlines, baseline = plt.stem(t, y1, markerfmt='o', label='y2')
+    plt.setp(stemlines, 'color', plt.getp(markerline,'color'))
+    plt.setp(stemlines, 'linestyle', 'dotted')
+
+    plt.legend()
+    plt.show()
+
+
+def stem2( t , y1 , y2 ):
+    markerline, stemlines, baseline = plt.stem(t, y1, markerfmt='o', label='y1')
+    plt.setp(stemlines, 'color', plt.getp(markerline,'color'))
+    plt.setp(stemlines, 'linestyle', 'dotted')
+
+    markerline, stemlines, baseline = plt.stem(t, y2, markerfmt='o', label='y2')
+    plt.setp(stemlines, 'color', plt.getp(markerline,'color'))
+    plt.setp(stemlines, 'linestyle', 'dotted')
+
+    plt.legend()
+    plt.show()
+
+# In[2]:
+def periodic_signal( freq ,amp , samples , func ):
+    ts = np.arange( 0 , 0.3 , 1 / (samples * freq) )
+    phases = 2 * np.pi * freq * ts 
+    ys = amp * func( phases )
+    return ts , ys
+
+def sin_signal( freq , amp , samples):
+    return periodic_signal(freq, amp, samples, np.sin )
+
+def cos_signal( freq , amp , samples):
+    return periodic_signal(freq, amp, samples, np.cos )
+
+def exp_signal( freq , amp , samples):
+    return periodic_signal( freq, amp, samples, np.exp )
+
+ts  ,exp_sig = exp_signal( 10 , 1 ,60 )
+stem(ts, exp_sig)
+plot( ts, exp_sig )
+fig = plt.figure()
+
+ts  ,sin_sin = sin_signal( 10 , 1 ,60 )
+stem(ts, sin_sin)
+plot( ts, sin_sin )
+fig = plt.figure()
